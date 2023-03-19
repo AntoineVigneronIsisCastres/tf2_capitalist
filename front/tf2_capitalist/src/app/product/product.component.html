@@ -1,12 +1,15 @@
 <div class="product-wrapper">
-    <div class="round">
-        <img class="product-image" src="{{server}}/{{product.logo}}">
+    <div class="product-thumbnail" (click)="startFabrication()">
+        <div class="round">
+            <img class="product-image" src="{{server}}/{{product.logo}}">
+        </div>
+        <div class="quantity">{{product.quantite}}</div>
     </div>
     <div class="properties">
-        <div class="progression-bar"></div>
+        <mat-progress-bar class="progression-bar" [value]="progressbarvalue"></mat-progress-bar>
         <div class="subproperties">
             <div class="multiplier"></div>
-            <div class="timer"></div>
+            <div class="timer"> {{product.timeleft}}</div>
         </div>
     </div>
 </div>

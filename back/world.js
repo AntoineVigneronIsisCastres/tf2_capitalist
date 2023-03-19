@@ -47,7 +47,7 @@ module.exports = {
             "cout": 30,
             "croissance": 1.45,
             "revenu": 30,
-            "vitesse": 500,
+            "vitesse": 5000,
             "quantite": 1,
             "timeleft": 0,
             "managerUnlocked": false,

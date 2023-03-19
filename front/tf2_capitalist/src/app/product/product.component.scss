@@ -18,8 +18,28 @@
     width: 280px;
 }
 
+.product-thumbnail {
+    position: relative;
+}
+
+.quantity {
+    position: absolute;
+    display: flex;
+    bottom: -10px;
+    height: 30px;
+    width: 110px;
+    font-size: 150%;
+    background-color: #2b2626;
+    border-radius: 30px;
+    align-items:center;
+    justify-content:center;
+}
+
 .timer {
     background-color: black;
     height: 20px;
     width: 70px;
+    display: flex;
+    align-items:center;
+    justify-content:center;
 }

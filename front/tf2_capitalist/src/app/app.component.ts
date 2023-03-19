@@ -10,13 +10,17 @@ import { Product, World } from './world';
 export class AppComponent {
   title = 'tf2_capitalist';
   world: World = new World();
-  products: Product[] = [];
   constructor(private service: WebserviceService) {
     service.getWorld().then(
       world => {
         this.world = world.data.getWorld;
-        this.products = world.data.getWorld.products;
+        this.world.products = world.data.getWorld.products;
       });
+  }
+
+  onProductionDone(p: Product){
+    this.world.money += p.revenu*p.quantite;
+    this.world.score += p.revenu*p.quantite;
   }
 
 }
