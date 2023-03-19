@@ -11,7 +11,7 @@ module.exports = {
         {
             "id": 1,
             "name": "Sandvich",
-            "logo": "icones/premierproduit.jpg",
+            "logo": "icones/sandvich.png",
             "cout": 4,
             "croissance": 1.21,
             "revenu": 1,
@@ -43,7 +43,7 @@ module.exports = {
         {
             "id": 2,
             "name": "Bouteille",
-            "logo": "icones/deuxiemeproduit.jpg",
+            "logo": "icones/bouteille.png",
             "cout": 30,
             "croissance": 1.45,
             "revenu": 30,

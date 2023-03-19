@@ -1,0 +1,25 @@
+.product-wrapper {
+    display: inline-flex;
+}
+
+.progression-bar{
+    background-color: green;
+    height: 40px;
+    width: 350px;
+}
+
+.subproperties {
+    display: flex;
+}
+
+.multiplier {
+    background-color: white;
+    height: 20px;
+    width: 280px;
+}
+
+.timer {
+    background-color: black;
+    height: 20px;
+    width: 70px;
+}
