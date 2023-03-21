@@ -6,9 +6,9 @@
     <div class="money" [innerHTML]="world.money | bigvalue"></div>
     <div class="content">
       <div class="product" *ngFor="let product of world.products">
-        <app-product [prod]="product" (notifyProduction)="onProductionDone($event)" class="product col-md-6"></app-product>
+        <app-product [prod]="product" [qtmulti]="multiplier" [money]="world.money" (notifyProduction)="onProductionDone($event)" class="product col-md-6"></app-product>
       </div>
     </div>
   </div>
-  <div class="commute"></div>
+  <div class="commute" (click)="changeMultiplier()">BUY <br>{{multiplier}}</div>
 </div>

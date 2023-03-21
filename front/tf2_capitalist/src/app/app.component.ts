@@ -10,6 +10,7 @@ import { Product, World } from './world';
 export class AppComponent {
   title = 'tf2_capitalist';
   world: World = new World();
+  multiplier = 'x1';
   constructor(private service: WebserviceService) {
     service.getWorld().then(
       world => {
@@ -21,6 +22,26 @@ export class AppComponent {
   onProductionDone(p: Product){
     this.world.money += p.revenu*p.quantite;
     this.world.score += p.revenu*p.quantite;
+  }
+
+  changeMultiplier(){
+    switch (this.multiplier) {
+      case 'x1':
+        this.multiplier = 'x10';
+        break;
+      case 'x10':
+        this.multiplier = 'x100';
+        break;
+      case 'x100':
+        this.multiplier = 'NEXT';
+        break;
+      case 'NEXT':
+        this.multiplier = 'MAX';
+        break;
+      default:
+        this.multiplier = 'x1';
+        break;
+    }
   }
 
 }
