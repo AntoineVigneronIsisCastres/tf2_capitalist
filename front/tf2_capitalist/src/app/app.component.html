@@ -1,6 +1,7 @@
 <div class="page">
   <div class="menu">
-    <div (click)="showManagers = !showManagers">Managers</div>
+    <button mat-raised-button color="primary" [matBadge]="badgeManagers" [matBadgeHidden]="badgeManagers==0"
+      (click)="showManagers = !showManagers"> Managers </button>
   </div>
   <div class="main-page">
     <div class="money" [innerHTML]="world.money | bigvalue"></div>

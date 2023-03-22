@@ -15,7 +15,7 @@ module.exports = {
             "cout": 4,
             "croissance": 1.21,
             "revenu": 1,
-            "vitesse": 500,
+            "vitesse": 5000,
             "quantite": 1,
             "timeleft": 0,
             "managerUnlocked": false,
@@ -108,10 +108,19 @@ module.exports = {
     ],
     "managers": [
         {
-            "name": "Wangari Maathai",
+            "name": "Heavy",
             "logo": "icones/WangariMaathai.jpg",
             "seuil": 10,
             "idcible": 1,
+            "ratio": 0,
+            "typeratio": "gain",
+            "unlocked": false
+        },
+        {
+            "name": "Demoman",
+            "logo": "icones/WangariMaathai.jpg",
+            "seuil": 30,
+            "idcible": 2,
             "ratio": 0,
             "typeratio": "gain",
             "unlocked": false

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebserviceService } from './webservice.service';
 import { Product, World } from './world';
 
@@ -12,8 +13,10 @@ export class AppComponent {
   world: World = new World();
   multiplier = 'x1';
   showManagers = false;
-  server = 'http://localhost:4000'
-  constructor(private service: WebserviceService) {
+  server = 'http://localhost:4000';
+  badgeManagers = 0;
+  availableManagers = [];
+  constructor(private service: WebserviceService, private snackBar: MatSnackBar) {
     service.getWorld().then(
       world => {
         this.world = world.data.getWorld;
@@ -21,12 +24,18 @@ export class AppComponent {
       });
   }
 
-  onProductionDone(p: Product){
-    this.world.money += p.revenu*p.quantite;
-    this.world.score += p.revenu*p.quantite;
+  onProductionDone(p: Product) {
+    this.world.money += p.revenu * p.quantite;
+    this.world.score += p.revenu * p.quantite;
+    this.badgeManagers = 0;
+    for (var i = 0; i < this.world.managers.length; i++) {
+      if (this.world.money >= this.world.managers[i].seuil){
+        this.badgeManagers += 1;
+      }
+    }
   }
 
-  changeMultiplier(){
+  changeMultiplier() {
     switch (this.multiplier) {
       case 'x1':
         this.multiplier = 'x10';
@@ -47,7 +56,17 @@ export class AppComponent {
   }
 
   hireManager(manager: any) {
-    return null;
+    if (this.world.money > manager.seuil) {
+      this.world.money -= manager.seuil;
+      manager.unlocked = true;
+      var product = this.world.products.find(product => product.id == manager.idcible)
+      if (product) {
+        product.managerUnlocked = true;
+        this.popMessage("Manager "+manager.name+" hired !")
+      }
+    }
   }
+
+  popMessage(message: string): void { this.snackBar.open(message, "", { duration: 2000 }) }
 
 }

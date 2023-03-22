@@ -11,7 +11,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import { BigvaluePipe } from './bigvalue.pipe';
-import {MatProgressBarModule} from '@angular/material/progress-bar'
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar'
     MatIconModule,
     MatDividerModule,
     MatProgressBarModule,
+    MatSnackBarModule,
+    MatBadgeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

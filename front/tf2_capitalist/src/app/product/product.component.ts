@@ -46,14 +46,18 @@ export class ProductComponent {
   }
 
   calcScore() {
-    if (!(this.product.timeleft == 0)) {
+    if (!(this.product.timeleft == 0) || (this.product.managerUnlocked == true && this.product.timeleft == 0)) {
       this.product.timeleft -= Date.now() - this.lastupdate
-      console.log(this.product.timeleft);
       if (this.product.timeleft <= 0) {
-        this.product.timeleft = 0;
-        this.progressbarvalue = 0;
-        this.timedisplay = "00:00:00"
-        this.notifyProduction.emit(this.product);
+        if(this.product.managerUnlocked == true) {
+          this.startFabrication();
+          this.notifyProduction.emit(this.product);
+        } else {
+          this.product.timeleft = 0;
+          this.progressbarvalue = 0;
+          this.timedisplay = "00:00:00"
+          this.notifyProduction.emit(this.product);
+        }
       } else {
         this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100;
         this.timedisplay = this.convertToTime(this.product.timeleft);
