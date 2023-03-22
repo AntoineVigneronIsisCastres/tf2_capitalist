@@ -68,7 +68,7 @@ export class ProductComponent {
     var strhours =  hours < 10 ? '0' + hours : hours;
     var strmin = minutes < 10 ? '0' + minutes : minutes;
     var strsec = seconds < 10 ? '0' + seconds : seconds;
-    return strhours+": "+strmin+": "+strsec;
+    return strhours+":"+strmin+":"+strsec;
   }
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
 }

@@ -11,6 +11,8 @@ export class AppComponent {
   title = 'tf2_capitalist';
   world: World = new World();
   multiplier = 'x1';
+  showManagers = false;
+  server = 'http://localhost:4000'
   constructor(private service: WebserviceService) {
     service.getWorld().then(
       world => {
@@ -42,6 +44,10 @@ export class AppComponent {
         this.multiplier = 'x1';
         break;
     }
+  }
+
+  hireManager(manager: any) {
+    return null;
   }
 
 }
