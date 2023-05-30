@@ -69,3 +69,10 @@ query GetWorld {
       }
     }
   }`;
+
+export const LANCER_PRODUCTION = gql`
+  mutation lancerProductionProduit($id: Int!) {
+     lancerProductionProduit(id: $id) {
+       id 
+      } 
+    }`

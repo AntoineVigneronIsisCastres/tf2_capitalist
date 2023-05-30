@@ -1,17 +1,18 @@
 <div class="page">
   <div class="menu">
     <button mat-raised-button color="primary" [matBadge]="badgeManagers" [matBadgeHidden]="badgeManagers==0"
-      (click)="showManagers = !showManagers"> Managers </button>
+    (click)="showManagers = !showManagers"> Managers </button>
   </div>
   <div class="main-page">
     <div class="money" [innerHTML]="world.money | bigvalue"></div>
     <div class="content">
       <div class="product" *ngFor="let product of world.products">
         <app-product [prod]="product" [qtmulti]="multiplier" [money]="world.money"
-          (notifyProduction)="onProductionDone($event)" class="product col-md-6"></app-product>
+        (notifyProduction)="onProductionDone($event)" class="product col-md-6"></app-product>
       </div>
     </div>
   </div>
+  <input class="player_id" type="text" [(ngModel)]="username" (change)="onUsernameChanged()"/>
   <div class="commute" (click)="changeMultiplier()">BUY <br>{{multiplier}}</div>
   <div *ngIf="showManagers" class="modal">
     <div>
@@ -30,11 +31,11 @@
           </div>
           <div>
             <div class="hirebutton" (click)="hireManager(manager)"
-              [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
+            [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
           </div>
         </div>
       </div>
     </div> <button class="closebutton" mat-raised-button color="primary"
-      (click)="showManagers = !showManagers">Close</button>
+    (click)="showManagers = !showManagers">Close</button>
   </div>
 </div>

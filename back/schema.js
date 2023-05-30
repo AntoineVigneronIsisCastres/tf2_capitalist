@@ -45,6 +45,7 @@ type World {
    }
 type Query {
     getWorld: World
+    updateWorld: World
    }
 type Mutation {
     acheterQtProduit(id: Int!, quantite: Int!): Product

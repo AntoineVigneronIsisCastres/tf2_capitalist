@@ -6,9 +6,20 @@ let world = require("./world");
 const server = new ApolloServer({
     typeDefs, resolvers,
     context: async ({ req }) => ({
-        world: world
+        world: await readUserWorld(req.headers["x-user"]),
+        user: req.headers["x-user"]
     })
 });
+
+async function readUserWorld(user) {
+    try {
+        const data = await fs.readFile("userworlds/" + user + "world.json");
+        return JSON.parse(data);
+    }
+    catch (error) {
+        return world
+    }
+}
 const app = express();
 app.use(express.static('public'));
 server.start().then(res => {

@@ -10,6 +10,7 @@ import { Product, World } from './world';
 })
 export class AppComponent {
   title = 'tf2_capitalist';
+  username = '';
   world: World = new World();
   multiplier = 'x1';
   showManagers = false;
@@ -17,6 +18,13 @@ export class AppComponent {
   badgeManagers = 0;
   availableManagers = [];
   constructor(private service: WebserviceService, private snackBar: MatSnackBar) {
+    var username = localStorage.getItem("username");
+    if(username && username != '') {
+      this.username = localStorage.getItem("username")!;
+    } else {
+      this.username = 'admin';
+    }
+    service.setUser(this.username);
     service.getWorld().then(
       world => {
         this.world = world.data.getWorld;
@@ -56,7 +64,7 @@ export class AppComponent {
   }
 
   hireManager(manager: any) {
-    if (this.world.money > manager.seuil) {
+    if (this.world.money >= manager.seuil) {
       this.world.money -= manager.seuil;
       manager.unlocked = true;
       var product = this.world.products.find(product => product.id == manager.idcible)
@@ -68,5 +76,9 @@ export class AppComponent {
   }
 
   popMessage(message: string): void { this.snackBar.open(message, "", { duration: 2000 }) }
+
+  onUsernameChanged(){
+    localStorage.setItem("username", this.username ? this.username : 'admin');
+  }
 
 }

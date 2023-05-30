@@ -1,7 +1,7 @@
 module.exports = {
     "name": "Teufort",
     "logo": "icones/logomonde.jpg",
-    "money": 0,
+    "money": 100,
     "score": 0,
     "totalangels": 0,
     "activeangels": 0,
@@ -15,7 +15,7 @@ module.exports = {
             "cout": 4,
             "croissance": 1.21,
             "revenu": 1,
-            "vitesse": 5000,
+            "vitesse": 500,
             "quantite": 1,
             "timeleft": 0,
             "managerUnlocked": false,
