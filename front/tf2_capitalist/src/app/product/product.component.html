@@ -9,7 +9,7 @@
         <mat-progress-bar class="progression-bar" [value]="progressbarvalue"></mat-progress-bar>
         <div class="subproperties">
             <div class="multiplier" (click)="buy(multiplier)">Buy <br/>x{{multiplier}}
-                <div class="cost">{{product.cout}}</div>
+                <div class="cost" [innerHTML]="calculateBuy(multiplier) | bigvalue"></div>
             </div>
             <div class="timer">{{timedisplay}}</div>
         </div>

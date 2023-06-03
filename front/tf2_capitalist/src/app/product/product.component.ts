@@ -123,6 +123,10 @@ export class ProductComponent {
     }
   }
 
+  calculateBuy(multiplier: number) {
+    return this.product.cout*multiplier;
+  }
+
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyBuy: EventEmitter<number> = new EventEmitter<number>();
 }
