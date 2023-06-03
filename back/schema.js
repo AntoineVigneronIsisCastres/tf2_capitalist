@@ -48,7 +48,7 @@ type Query {
     updateWorld: World
    }
 type Mutation {
-    acheterQtProduit(id: Int!, quantite: Int!): Product
+    acheterQtProduit(id: Int!, quantite: Int!, multiplier: Int!): Product
     lancerProductionProduit(id: Int!): Product
     engagerManager(name: String!): Palier
     acheterCashUpgrade(name: String!): Palier

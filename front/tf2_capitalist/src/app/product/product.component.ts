@@ -20,7 +20,13 @@ export class ProductComponent {
   constructor(private router: Router, private service: WebserviceService) { }
   @Input()
   set prod(value: Product) {
-    this.product = value;
+    this.product = value; 
+    // if (this.product && this.product.timeleft > 0) {
+    //   this.lastupdate = Date.now();
+    //   let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+      // this.progressbarvalue.set(progress);
+      // this.progressbarvalue.animate(1, { duration: this.product.timeleft }); 
+    // } 
   }
 
   @Input()
@@ -67,16 +73,19 @@ export class ProductComponent {
     if (!(this.product.timeleft == 0) || (this.product.managerUnlocked == true && this.product.timeleft == 0)) {
       this.product.timeleft -= Date.now() - this.lastupdate
       this.lastupdate = Date.now()
+      console.log(this.lastupdate)
       if (this.product.timeleft <= 0) {
         if (this.product.managerUnlocked == true) {
           this.startFabrication();
-          this.notifyProduction.emit(this.product);
-        } else {
           this.service.lancerProduction(this.product).catch(reason =>
             console.log("erreur: " + reason));
+          this.notifyProduction.emit(this.product);
+        } else {
           this.product.timeleft = 0;
           this.progressbarvalue = 0;
           this.timedisplay = "00:00:00"
+          this.service.lancerProduction(this.product).catch(reason =>
+            console.log("erreur: " + reason));
           this.notifyProduction.emit(this.product);
         }
       } else {
@@ -95,7 +104,27 @@ export class ProductComponent {
     var strsec = seconds < 10 ? '0' + seconds : seconds;
     return strhours + ":" + strmin + ":" + strsec;
   }
+
+  buy(multiplier: number) {
+    var coutTotal = 0;
+    var cout = this.product.cout
+    var quantite = this.product.quantite
+    for(let i = 0; i < multiplier; i++) {
+      quantite += 1 
+      coutTotal += this.product.cout
+      cout = cout*this.product.croissance
+    }
+    if (this._money - coutTotal > 0) {
+      this.product.cout = cout
+      this.product.quantite = quantite
+      this.notifyBuy.emit(coutTotal)
+      this.service.acheterQtProduit(this.product, multiplier).catch(reason =>
+        console.log("erreur: " + reason));
+    }
+  }
+
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
+  @Output() notifyBuy: EventEmitter<number> = new EventEmitter<number>();
 }
 
 

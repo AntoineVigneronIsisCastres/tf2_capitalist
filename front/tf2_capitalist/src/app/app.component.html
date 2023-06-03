@@ -8,7 +8,7 @@
     <div class="content">
       <div class="product" *ngFor="let product of world.products">
         <app-product [prod]="product" [qtmulti]="multiplier" [money]="world.money"
-        (notifyProduction)="onProductionDone($event)" class="product col-md-6"></app-product>
+        (notifyProduction)="onProductionDone($event)" (notifyBuy)="onBuy($event)" class="product col-md-6"></app-product>
       </div>
     </div>
   </div>

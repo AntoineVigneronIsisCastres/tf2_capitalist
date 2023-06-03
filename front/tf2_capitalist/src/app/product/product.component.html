@@ -8,7 +8,9 @@
     <div class="properties">
         <mat-progress-bar class="progression-bar" [value]="progressbarvalue"></mat-progress-bar>
         <div class="subproperties">
-            <div class="multiplier">Buy <br/>x{{multiplier}}</div>
+            <div class="multiplier" (click)="buy(multiplier)">Buy <br/>x{{multiplier}}
+                <div class="cost">{{product.cout}}</div>
+            </div>
             <div class="timer">{{timedisplay}}</div>
         </div>
     </div>

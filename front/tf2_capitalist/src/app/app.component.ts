@@ -35,6 +35,15 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money += p.revenu * p.quantite;
     this.world.score += p.revenu * p.quantite;
+    console.log(p.revenu)
+    this.setBadgeManagers();
+  }
+
+  onBuy(coutTotal: number) {
+    this.world.money -= coutTotal;
+  }
+
+  setBadgeManagers() {
     this.badgeManagers = 0;
     for (var i = 0; i < this.world.managers.length; i++) {
       if (this.world.money >= this.world.managers[i].seuil){
@@ -67,6 +76,8 @@ export class AppComponent {
     if (this.world.money >= manager.seuil) {
       this.world.money -= manager.seuil;
       manager.unlocked = true;
+      this.service.engagerManager(manager).catch(reason =>
+        console.log("erreur: " + reason));
       var product = this.world.products.find(product => product.id == manager.idcible)
       if (product) {
         product.managerUnlocked = true;

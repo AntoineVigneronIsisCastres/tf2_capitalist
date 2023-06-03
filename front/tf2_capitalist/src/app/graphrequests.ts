@@ -76,3 +76,18 @@ export const LANCER_PRODUCTION = gql`
        id 
       } 
     }`
+
+export const ENGAGER_MANAGER = gql`
+    mutation engagerManager($name: String!) {
+       engagerManager(name: $name) {
+         name
+        } 
+      }`
+
+export const ACHETER_QT_PRODUIT = gql`
+    mutation acheterQtProduit($id: Int!, $quantite: Int!, $multiplier: Int!) {
+       acheterQtProduit(id: $id, quantite: $quantite, multiplier: $multiplier) {
+         id,
+         quantite
+        } 
+      }`
