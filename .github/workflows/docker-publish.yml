@@ -26,6 +26,14 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./back/Dockerfile
+            image: ghcr.io/antoinevigneronisiscastres/isiscapitalistbackend
+#           - dockerfile: ./src/Dockerfile-dril4net-distribution
+#             image: ghcr.io/username/image2
     permissions:
       contents: read
       packages: write
