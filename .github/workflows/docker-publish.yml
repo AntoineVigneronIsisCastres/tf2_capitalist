@@ -29,7 +29,7 @@ jobs:
       matrix:
         include:
           - dockerfile: ./back/Dockerfile
-            image: ghcr.io/antoinevigneronisiscastres/isiscapitalistbackend
+            image: ghcr.io/antoinevigneronisiscastres/${{ github.repository }}
             context: ./back
 #           - dockerfile: ./front/DockerFile
 #             image: ghcr.io/bastienhatinguais/isiscapitalistfront
