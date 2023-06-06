@@ -294,6 +294,8 @@ svg#clouds {
 }
 
 .menu {
+  display: flex;
+  flex-direction: column;
   height: 90vh;
   padding: 16px;
   margin: 16px;

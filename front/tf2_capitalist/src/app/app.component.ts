@@ -14,6 +14,7 @@ export class AppComponent {
   world: World = new World();
   multiplier = 'x1';
   showManagers = false;
+  showUnlocks = false;
   server = 'http://localhost:4000';
   badgeManagers = 0;
   availableManagers = [];
@@ -35,7 +36,6 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money += p.revenu * p.quantite;
     this.world.score += p.revenu * p.quantite;
-    console.log(p.revenu)
     this.setBadgeManagers();
   }
 

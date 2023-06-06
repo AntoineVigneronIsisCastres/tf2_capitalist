@@ -117,6 +117,24 @@ export class ProductComponent {
     if (this._money - coutTotal > 0) {
       this.product.cout = cout
       this.product.quantite = quantite
+      var ulpalliers = this.product.paliers.filter(palier => palier.unlocked === true)
+      var lastpallier = ulpalliers[ulpalliers.length-1]
+      console.log("ici")
+      console.log(this.product.vitesse)
+      if (!(typeof lastpallier === 'undefined') && ulpalliers.length < this.product.paliers.length) {
+        var newpalier = this.product.paliers[ulpalliers.length]
+        var newseuil = this.product.paliers[ulpalliers.length].seuil
+        if (newseuil != 0 && this.product.quantite >= newseuil) {
+          this.product.paliers.find(palier => palier.name == lastpallier.name)
+          this.product.vitesse = newpalier ? this.product.vitesse/newpalier.ratio : this.product.vitesse
+          console.log(this.product.vitesse)
+        }
+      } else if (typeof lastpallier === 'undefined' && this.product.quantite >= this.product.paliers[0].seuil) {
+        console.log("first")
+        this.product.vitesse /= this.product.paliers[0].ratio
+        this.product.paliers[0].unlocked = true;
+        console.log(this.product.vitesse)
+      }
       this.notifyBuy.emit(coutTotal)
       this.service.acheterQtProduit(this.product, multiplier).catch(reason =>
         console.log("erreur: " + reason));

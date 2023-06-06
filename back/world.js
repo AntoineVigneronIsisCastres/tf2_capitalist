@@ -15,11 +15,11 @@ module.exports = {
             "cout": 4,
             "croissance": 1.21,
             "revenu": 1,
-            "vitesse": 500,
+            "vitesse": 5000,
             "quantite": 1,
             "timeleft": 0,
             "managerUnlocked": false,
-            "palliers": [
+            "paliers": [
                 {
                     "name": "Nom du premier palier",
                     "logo": "icones/premierpalier.jpg",
