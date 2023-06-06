@@ -29,7 +29,8 @@ jobs:
       matrix:
         include:
           - dockerfile: ./back/Dockerfile
-            image: ghcr.io/antoinevigneronisiscastres/isiscapitalistbackend
+            image: ghcr.io/antoinevigneronisiscastres/${{ github.repository }}
+            context: ./back
 #           - dockerfile: ./front/DockerFile
 #             image: ghcr.io/bastienhatinguais/isiscapitalistfront
     permissions:
@@ -80,7 +81,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: .
+          context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
