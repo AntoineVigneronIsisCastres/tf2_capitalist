@@ -6,9 +6,11 @@
         <div class="quantity">{{product.quantite}}</div>
     </div>
     <div class="properties">
-        <mat-progress-bar class="progression-bar" [value]="progressbarvalue"></mat-progress-bar>
+        <app-my-progress-bar [run]="run" [auto]="auto" frontcolor="#9d312f" backcolor="#34302d"
+            [orientation]="orientation" [vitesse]="vitesse" [initialValue]="initialValue">
+        </app-my-progress-bar>
         <div class="subproperties">
-            <div class="multiplier" (click)="buy(multiplier)">Buy <br/>x{{multiplier}}
+            <div class="multiplier" (click)="buy(multiplier)">Buy <br />x{{multiplier}}
                 <div class="cost" [innerHTML]="calculateBuy(multiplier) | bigvalue"></div>
             </div>
             <div class="timer">{{timedisplay}}</div>

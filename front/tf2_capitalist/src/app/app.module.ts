@@ -15,12 +15,14 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatBadgeModule} from '@angular/material/badge';
 import { FormsModule } from '@angular/forms';
+import { MyProgressBarComponent } from './progressbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
-    BigvaluePipe
+    BigvaluePipe,
+    MyProgressBarComponent,
   ],
   imports: [
     BrowserModule,
