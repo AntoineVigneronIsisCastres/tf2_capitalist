@@ -25,7 +25,7 @@ module.exports = {
                     "logo": "icones/premierpalier.jpg",
                     "seuil": 20,
                     "idcible": 1,
-                    "ratio": 10,
+                    "ratio": 2,
                     "typeratio": "vitesse",
                     "unlocked": false
                 },

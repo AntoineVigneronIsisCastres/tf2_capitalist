@@ -68,8 +68,7 @@ export class ProductComponent {
   }
 
   ngOnInit() {
-    console.log("EN PREMIER"+this.product)
-    console.log(this.product.timeleft)
+    console.log("oninit"+this.product.timeleft)
     this.lastupdate = Date.now();
     setInterval(() => { this.calcScore(); }, 100)
   }
@@ -80,36 +79,40 @@ export class ProductComponent {
   }
 
   calcScore() {
-    if (!(this.product.timeleft == 0) || (this.product.managerUnlocked == true && this.product.timeleft == 0)) {
-      this.product.timeleft -= Date.now() - this.lastupdate
-      console.log(this.product.timeleft)
-      this.initialValue = this.product.vitesse - this.product.timeleft;
-      console.log("INITIALVALUE : "+this.initialValue)
-      this.lastupdate = Date.now()
-      if (this.product.timeleft <= 0) {
-        if (this.product.managerUnlocked == true) {
-          this.startFabrication();
-          this.auto = true;
-          this.service.lancerProduction(this.product).catch(reason =>
-            console.log("erreur: " + reason));
-          this.notifyProduction.emit(this.product);
-        } else {
-          console.log("ici")
-          this.product.timeleft = 0;
-          this.progressbarvalue = 0;
-          this.run = false;
-          this.timedisplay = "00:00:00"
-          this.service.lancerProduction(this.product).catch(reason =>
-            console.log("erreur: " + reason));
-          this.notifyProduction.emit(this.product);
-        }
-      } else {
-        this.vitesse = this.product.vitesse;
-        this.run = true;
-        this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100;
-        this.timedisplay = this.convertToTime(this.product.timeleft);
-      }
+    if (this.product.timeleft <= 0 && !this.product.managerUnlocked) {
+      this.initialValue = 0;
+      return;
     }
+    const elapsedTime = Date.now() - this.lastupdate;
+    const qteProduit = this.calcQtProductionforElapseTime(elapsedTime);
+    if (qteProduit > 0) {
+      this.notifyProduction.emit({ product: this.product, qteProduit });
+    }
+    // if (!(this.product.timeleft == 0) || (this.product.managerUnlocked == true && this.product.timeleft == 0)) {
+    //   console.log("this.lastupdate "+this.lastupdate)
+    //   this.product.timeleft -= Date.now() - this.lastupdate
+    //   this.initialValue = this.product.vitesse - this.product.timeleft;
+    //   if (this.product.timeleft <= 0) {
+    //     if (this.product.managerUnlocked == true) {
+    //       this.startFabrication();
+    //       this.auto = true;
+    //       this.service.lancerProduction(this.product).catch(reason =>
+    //         console.log("erreur: " + reason));
+    //       this.notifyProduction.emit(this.product);
+    //     } else {
+    //       this.product.timeleft = 0;
+    //       this.progressbarvalue = 0;
+    //       this.run = false;
+    //       this.timedisplay = "00:00:00"
+    //       this.service.lancerProduction(this.product).catch(reason =>
+    //         console.log("erreur: " + reason));
+    //       this.notifyProduction.emit(this.product);
+    //     }
+    //   } else {
+    //   }
+    this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100;
+    this.timedisplay = this.convertToTime(this.product.timeleft);
+    this.lastupdate = Date.now();
   }
 
   convertToTime(timeleft: number): string {
@@ -160,9 +163,48 @@ export class ProductComponent {
     return this.product.cout*multiplier;
   }
 
+  calcQtProductionforElapseTime(tempsEcoule: number) {
+    let nbrProduction = 0;
+    if (this.product.managerUnlocked) {
+      this.initialValue = this.product.vitesse - this.product.timeleft;
+      this.auto = true;
+      this.run = true;
+      console.log("ici")
+      this.vitesse = this.product.vitesse;
+      if (tempsEcoule > this.product.timeleft) {
+        console.log("ici2")
+        var nbr = Math.trunc(
+          (tempsEcoule - this.product.timeleft) / this.product.vitesse
+        );
+        nbrProduction = nbr + 1;
+        this.product.timeleft =
+          this.product.vitesse -
+          (tempsEcoule - this.product.timeleft - this.product.vitesse * nbr);
+      } else {
+        console.log("ici3")
+        this.product.timeleft = this.product.timeleft - tempsEcoule;
+      }
+    } else if (this.product.timeleft != 0) {
+      console.log("ici4")
+      this.initialValue = this.product.vitesse - this.product.timeleft;
+      this.run = true;
+      this.vitesse = this.product.vitesse;
+      if (this.product.timeleft < tempsEcoule) {
+        console.log("ici5")
+        nbrProduction = this.product.quantite;
+        this.product.timeleft = 0;
+        this.run = false;
+      } else {
+        console.log("ici6")
+        this.product.timeleft -= tempsEcoule;
+      }
+    }
+    return nbrProduction;
+  }
+
   popMessage(message: string): void { this.snackBar.open(message, "", { duration: 2000 }) }
 
-  @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
+  @Output() notifyProduction = new EventEmitter();
   @Output() notifyBuy: EventEmitter<number> = new EventEmitter<number>();
 }
 

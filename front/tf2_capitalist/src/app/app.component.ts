@@ -33,9 +33,13 @@ export class AppComponent {
       });
   }
 
-  onProductionDone(p: Product) {
-    this.world.money += p.revenu * p.quantite;
-    this.world.score += p.revenu * p.quantite;
+  onProductionDone(data : {product: Product; qteProduit: number}) {
+    const gain =
+      data.product.quantite *
+      data.product.revenu *
+      data.qteProduit
+    this.world.money += gain;
+    this.world.score += gain;
     this.setBadgeManagers();
   }
 
