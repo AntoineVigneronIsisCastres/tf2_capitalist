@@ -2,7 +2,9 @@ const fs = require('fs');
 module.exports = {
     Query: {
         getWorld(parent, args, context) {
+            console.log("AVANT GET"+context.world.money)
             updateWorld(context)
+            console.log("APRES GET"+context.world.money)
             saveWorld(context)
             return context.world
         }
@@ -22,10 +24,8 @@ module.exports = {
                         coutTotal += product.cout;
                         product.cout = product.cout*product.croissance;
                         //todo : ajouter la soustraction totale à context world money
-                        updateWorld(context);
                     }
                     if (context.world.money - coutTotal > 0) {
-                        console.log("PRODUCTVITESSE"+product.vitesse)
                         var ulpalliers = product.paliers.filter(palier => palier.unlocked === true)
                         var lastpallier = ulpalliers[ulpalliers.length-1]
                         if (!(typeof lastpallier === 'undefined') && ulpalliers.length < product.paliers.length) {
@@ -42,6 +42,7 @@ module.exports = {
                           product.paliers[0].unlocked = true;
                           this.popMessage(product.name+" speed x"+product.paliers[0].ratio+" ! ")
                         }
+                        console.log(coutTotal)
                         context.world.money -= coutTotal
                       }
                 }
@@ -52,6 +53,8 @@ module.exports = {
         },
 
         lancerProductionProduit(parent, args, context) {
+            console.log("PRODUCTVITESSE"+product.vitesse)
+            console.log("coekcoecoekf")
             updateWorld(context)
             if(args.id) {
                 var product = context.world.products.find(produit => args.id == produit.id);
@@ -59,9 +62,7 @@ module.exports = {
                     throw new Error(`Le produit avec l'id ${args.id} n'existe pas`)
                 } else {
                     product.timeleft = product.vitesse;
-                    context.world.lastupdate = Date.now();
                     console.log('----------------------------lancerproductionproduit-------------------')
-                    updateWorld(context);
                 }
             } else {
                 throw new Error(`Le produit avec l'id ${args.id} n'existe pas`)
@@ -77,7 +78,8 @@ module.exports = {
                 var product = context.world.products.find(product => manager.idcible == product.id);
                 manager.unlocked = true;
                 product.managerUnlocked = true;
-                console.log(product);
+                context.world.money -= manager.seuil;
+                product.timeleft = product.vitesse;
             } else {
                 throw new Error(`Le manager avec le nom ${args.name} n'existe pas`)
             }
@@ -101,26 +103,32 @@ function updateWorld(context) {
     var products = context.world.products;
     var tempsecoule = Date.now() - context.world.lastupdate;
     for(var product of products) {
-        if(product.managerUnlocked) {
-            console.log("TRUC")
-            context.world.money += (tempsecoule/product.vitesse)*(product.quantite*product.revenu);
-        } else {
-            if(product.timeleft != 0 && product.timeleft < tempsecoule) {
-                context.world.money += product.revenu*product.quantite;
-                product.timeleft = 0;
-            } else {
-            }
-            console.log("timeleft "+product.timeleft)
-            console.log("managerunlocked "+product.managerUnlocked)
-            console.log("tempsecoule "+tempsecoule)
-            console.log("lastupdate "+context.world.lastupdate)
-            console.log("nom "+product.name)
-            console.log("revenu "+product.revenu)
-            console.log("quantite "+product.quantite)
-            console.log("money "+context.world.money)
-        }
+        var quantite = calcQtProduitTempsEcoule(product, tempsecoule);
+        context.world.money += product.revenu * quantite;
     }
     context.world.lastupdate = Date.now();
-    saveWorld(context);
+    console.log(context.world.money)
+    // saveWorld(context);
 }
 
+function calcQtProduitTempsEcoule(product, tempsEcoule) {
+    let nbrProduction = 0;
+    if (product.managerUnlocked) {
+      if (tempsEcoule - product.timeleft > 0) {
+        var nbr = Math.trunc((tempsEcoule - product.timeleft) / product.vitesse);
+        nbrProduction = nbr + 1;
+        product.timeleft = product.vitesse - (tempsEcoule - product.timeleft - product.vitesse * nbr);
+      } else {
+        product.timeleft = product.timeleft - tempsEcoule;
+      }
+    } else if (product.timeleft != 0) {
+        console.log("test")
+      if (product.timeleft < tempsEcoule) {
+        nbrProduction = product.quantite;
+        product.timeleft = 0;
+      } else {
+        product.timeleft -= tempsEcoule;
+      }
+    }
+    return nbrProduction;
+  }
