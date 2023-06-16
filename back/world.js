@@ -270,7 +270,7 @@ module.exports = {
             "name": "Nom du premier unlock général",
             "logo": "icones/premierunlock.jpg",
             "seuil": 30,
-            "idcible": 0,
+            "idcible": 1,
             "ratio": 2,
             "typeratio": "gain",
             "unlocked": false

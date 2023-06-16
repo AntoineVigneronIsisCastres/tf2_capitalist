@@ -4,6 +4,8 @@
     (click)="showManagers = !showManagers"> Managers </button>
     <button mat-raised-button color="primary"
     (click)="showUnlocks = !showUnlocks"> Unlocks </button>
+    <button mat-raised-button color="primary"
+    (click)="showAllUnlocks = !showAllUnlocks"> All unlocks </button>
   </div>
   <div class="main-page">
     <div class="money" [innerHTML]="world.money | bigvalue"></div>
@@ -20,16 +22,16 @@
     <div>
       <h1 class="title">Managers make you feel better !</h1>
     </div>
-    <div>
+    <div class="gridlayout">
       <div *ngFor="let manager of world.managers">
-        <div *ngIf="!manager.unlocked" class="managerslayout">
-          <div>
-            <div class="logo"><img class="round" [attr.src]="server+manager.logo" /> </div>
+        <div *ngIf="!manager.unlocked" class="unlock-item">
+          <div class="itemwrapper">
+            <div class="roundmenu"><img class="product-image" [attr.src]="server+'/'+manager.logo" /> </div>
           </div>
           <div>
-            <div class="managername"> {{ manager.name}} </div>
-            <div class="managercible"> {{ world.products[manager.idcible-1].name }} </div>
-            <div class="managercost"> {{ manager.seuil}} </div>
+            <div class="name"> {{ manager.name}} </div>
+            <div class="cible"> {{ world.products[manager.idcible-1].name }} </div>
+            <div class="cost"> {{ manager.seuil}} </div>
           </div>
           <div>
             <div class="hirebutton" (click)="hireManager(manager)"
@@ -44,6 +46,28 @@
     <div>
       <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
     </div>
+    <div class="gridlayout">
+      <div *ngFor="let product of world.products">
+        <div *ngFor="let unlock of product.paliers">
+          <div *ngIf="!unlock.unlocked" class="unlock-item">
+            <div class="itemwrapper">
+              <div class="roundmenu"><img class="product-image" [attr.src]="server + '/' + product.logo" /> </div>
+            </div>
+            <div>
+              <div class="name"> {{ unlock.name}} </div>
+              <div class="cible"> {{ world.products[unlock.idcible-1].name }} </div>
+              <div class="cost"> {{ unlock.seuil}} </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <button class="closebutton" mat-raised-button color="primary"
+    (click)="showUnlocks = !showUnlocks">Close</button>
+  </div>
+  <div *ngIf="showAllUnlocks" class="modal">
+    <div>
+      <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
+    </div>
     <div>
       <div *ngFor="let unlock of world.allunlocks">
         <div *ngIf="!unlock.unlocked" class="unlockslayout">
@@ -51,13 +75,13 @@
             <div class="logo"><img class="round" [attr.src]="server+world.logo" /> </div>
           </div>
           <div>
-            <div class="unlockname"> {{ unlock.name}} </div>
-            <div class="unlockcible"> {{ world.products[unlock.idcible-1].name }} </div>
-            <div class="unlockcost"> {{ unlock.seuil}} </div>
+            <div class="name"> {{ unlock.name}} </div>
+            <div class="cible"> {{ world.products[unlock.idcible-1].name }} </div>
+            <div class="cost"> {{ unlock.seuil}} </div>
           </div>
         </div>
       </div>
     </div> <button class="closebutton" mat-raised-button color="primary"
-    (click)="showUnlocks = !showUnlocks">Close</button>
+    (click)="showAllUnlocks = !showAllUnlocks">Close</button>
   </div>
 </div>

@@ -1,14 +1,19 @@
 <div class="product-wrapper">
-    <div class="product-thumbnail" (click)="startFabrication()">
+    <div class="product-thumbnail" (click)="lancerProduction()">
         <div class="round">
             <img class="product-image" src="{{server}}/{{product.logo}}">
         </div>
         <div class="quantity">{{product.quantite}}</div>
     </div>
     <div class="properties">
-        <app-my-progress-bar [run]="run" [auto]="auto" frontcolor="#9d312f" backcolor="#34302d"
+        <div class="maskbar">
+            <div class="barbackground"></div>
+            <app-my-progress-bar class="bar" [run]="run" [auto]="auto" frontcolor="#9d312f" backcolor="#34302d"
             [orientation]="orientation" [vitesse]="vitesse" [initialValue]="initialValue">
-        </app-my-progress-bar>
+            </app-my-progress-bar>
+            <div class="revenu">{{product.revenu | bigvalue}}</div>
+            <img class="mask" src="{{server}}/{{barmask}}">
+        </div>
         <div class="subproperties">
             <div class="multiplier" (click)="buy(multiplier)">Buy <br />x{{multiplier}}
                 <div class="cost" [innerHTML]="calculateBuy(multiplier) | bigvalue"></div>

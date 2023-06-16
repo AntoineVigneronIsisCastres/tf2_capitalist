@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Product } from '../world';
+import { Palier, Product } from '../world';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebserviceService } from '../webservice.service';
@@ -13,6 +13,7 @@ import { Orientation } from '../progressbar.component';
 export class ProductComponent {
   product: Product = new Product;
   server = 'http://localhost:4000';
+  barmask = 'icones/medichud.png'
   progressbarvalue = 0;
   initialValue = 0;
   auto = false;
@@ -21,7 +22,7 @@ export class ProductComponent {
   backcolor = 'blue';
   orientation = Orientation.horizontal;
   vitesse = 0;
-  lastupdate = 0;
+  lastupdate = Date.now();
   _qtmulti = "";
   multiplier = 0;
   _money = 0;
@@ -68,49 +69,35 @@ export class ProductComponent {
   }
 
   ngOnInit() {
-    console.log("oninit"+this.product.timeleft)
-    this.lastupdate = Date.now();
     setInterval(() => { this.calcScore(); }, 100)
+    if(this.product.managerUnlocked || this.product.timeleft != 0){
+      this.initialValue = this.product.vitesse - this.product.timeleft;
+    }
   }
 
-  startFabrication() {
-    this.product.timeleft = this.product.vitesse;
-    this.lastupdate = Date.now();
+  lancerProduction() {
+    if (!this.product.managerUnlocked) {
+      this.product.timeleft = this.product.vitesse;
+      console.log("IN LANCERPROD"+this._money)
+      this.service
+        .lancerProduction(this.product)
+        .catch((reason) => console.log('erreur: ' + reason));
+    }
   }
 
   calcScore() {
     if (this.product.timeleft <= 0 && !this.product.managerUnlocked) {
+      this.run = false;
       this.initialValue = 0;
+      this.lastupdate = Date.now();
       return;
     }
-    const elapsedTime = Date.now() - this.lastupdate;
-    const qteProduit = this.calcQtProductionforElapseTime(elapsedTime);
+    var elapsedTime = Date.now() - this.lastupdate;
+    var qteProduit = this.calcQtProductionforElapseTime(elapsedTime);
     if (qteProduit > 0) {
       this.notifyProduction.emit({ product: this.product, qteProduit });
     }
-    // if (!(this.product.timeleft == 0) || (this.product.managerUnlocked == true && this.product.timeleft == 0)) {
-    //   console.log("this.lastupdate "+this.lastupdate)
-    //   this.product.timeleft -= Date.now() - this.lastupdate
-    //   this.initialValue = this.product.vitesse - this.product.timeleft;
-    //   if (this.product.timeleft <= 0) {
-    //     if (this.product.managerUnlocked == true) {
-    //       this.startFabrication();
-    //       this.auto = true;
-    //       this.service.lancerProduction(this.product).catch(reason =>
-    //         console.log("erreur: " + reason));
-    //       this.notifyProduction.emit(this.product);
-    //     } else {
-    //       this.product.timeleft = 0;
-    //       this.progressbarvalue = 0;
-    //       this.run = false;
-    //       this.timedisplay = "00:00:00"
-    //       this.service.lancerProduction(this.product).catch(reason =>
-    //         console.log("erreur: " + reason));
-    //       this.notifyProduction.emit(this.product);
-    //     }
-    //   } else {
-    //   }
-    this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100;
+    this.run = true;
     this.timedisplay = this.convertToTime(this.product.timeleft);
     this.lastupdate = Date.now();
   }
@@ -137,22 +124,11 @@ export class ProductComponent {
     if (this._money - coutTotal > 0) {
       this.product.cout = cout
       this.product.quantite = quantite
-      var ulpalliers = this.product.paliers.filter(palier => palier.unlocked === true)
-      var lastpallier = ulpalliers[ulpalliers.length-1]
-      if (!(typeof lastpallier === 'undefined') && ulpalliers.length < this.product.paliers.length) {
-        var newpalier = this.product.paliers[ulpalliers.length]
-        var newseuil = this.product.paliers[ulpalliers.length].seuil
-        if (newseuil != 0 && this.product.quantite >= newseuil) {
-          this.product.paliers.find(palier => palier.name == lastpallier.name)
-          this.product.vitesse = newpalier ? this.product.vitesse/newpalier.ratio : this.product.vitesse
-          newpalier.unlocked = true
-          this.popMessage(this.product.name+" speed x"+newpalier.ratio+" ! ")
+      this.product.paliers.forEach((p) => {
+        if (!p.unlocked && this.product.quantite >= p.seuil) {
+          this.calcUpgrade(p);
         }
-      } else if (typeof lastpallier === 'undefined' && this.product.quantite >= this.product.paliers[0].seuil) {
-        this.product.vitesse /= this.product.paliers[0].ratio
-        this.product.paliers[0].unlocked = true;
-        this.popMessage(this.product.name+" speed x"+this.product.paliers[0].ratio+" ! ")
-      }
+      });
       this.notifyBuy.emit(coutTotal)
       this.service.acheterQtProduit(this.product, multiplier).catch(reason =>
         console.log("erreur: " + reason));
@@ -166,40 +142,64 @@ export class ProductComponent {
   calcQtProductionforElapseTime(tempsEcoule: number) {
     let nbrProduction = 0;
     if (this.product.managerUnlocked) {
-      this.initialValue = this.product.vitesse - this.product.timeleft;
+      console.log("ICI 1 "+this.product.name)
       this.auto = true;
       this.run = true;
-      console.log("ici")
       this.vitesse = this.product.vitesse;
+
       if (tempsEcoule > this.product.timeleft) {
-        console.log("ici2")
+        console.log("AVANT ICI 2"+this.product.name+" "+this.product.timeleft)
+        console.log("ICI 2 "+this.product.name)
         var nbr = Math.trunc(
           (tempsEcoule - this.product.timeleft) / this.product.vitesse
         );
-        nbrProduction = nbr + 1;
+        if(this.product.timeleft != 0) {
+          nbrProduction = nbr + 1;
+        } else {
+          nbrProduction = 0;
+        }
         this.product.timeleft =
           this.product.vitesse -
           (tempsEcoule - this.product.timeleft - this.product.vitesse * nbr);
       } else {
-        console.log("ici3")
+        console.log("ICI 3 "+this.product.name)
         this.product.timeleft = this.product.timeleft - tempsEcoule;
       }
     } else if (this.product.timeleft != 0) {
-      console.log("ici4")
-      this.initialValue = this.product.vitesse - this.product.timeleft;
-      this.run = true;
+      // this.initialValue = this.product.vitesse - this.product.timeleft;
       this.vitesse = this.product.vitesse;
       if (this.product.timeleft < tempsEcoule) {
-        console.log("ici5")
         nbrProduction = this.product.quantite;
         this.product.timeleft = 0;
-        this.run = false;
+        // this.run = false;
       } else {
-        console.log("ici6")
         this.product.timeleft -= tempsEcoule;
       }
     }
     return nbrProduction;
+  }
+
+  calcUpgrade(p: Palier) {
+    if (!p.unlocked) {
+      let customMessage = '';
+      // On ajoute l'unlock ou l'upgrade
+      switch (p.typeratio) {
+        case 'vitesse':
+          this.product.vitesse /= p.ratio;
+          this.product.timeleft /= p.ratio;
+          customMessage = 'speed increased x' + p.ratio + ' !';
+          break;
+        case 'gain':
+          this.product.revenu *= p.ratio;
+          customMessage = 'income increased x' + p.ratio + ' !';
+          break;
+        default:
+          throw 'Le type de ratio ' + p.typeratio + " n'existe pas !";
+      }
+      p.unlocked = true;
+      this.popMessage(
+        `Product ${this.product.name} ${customMessage}`);
+    }
   }
 
   popMessage(message: string): void { this.snackBar.open(message, "", { duration: 2000 }) }

@@ -6,18 +6,17 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BigvaluePipe implements PipeTransform {
 
   transform(valeur: number, args?: any): unknown {
-    let res: string;
-    res = "$";
-    if (valeur < 1000)
-      res += valeur.toFixed(2);
-    else if (valeur < 1000000)
-      res += valeur.toFixed(0);
-    else if (valeur > 1000000)
-      res += valeur.toFixed(0)
-    else if (valeur >= 1000000000) {
-      res += valeur.toPrecision(4);
-      res += res.replace(/e\+(.*)/, " 10<sup>$1</sup>");
+    const units = ['', 'K', 'M', 'Md', 'T', 'Td'];
+    let absValue = Math.abs(valeur);
+    let i = 0;
+    while (absValue >= 1e3 && i < units.length - 1) {
+      absValue /= 1e3;
+      i++;
     }
-    return res;
+    const formattedValue = "$"+absValue.toLocaleString(undefined, {
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3,
+    });
+    return formattedValue + units[i];
   }
 }

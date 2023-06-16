@@ -9,11 +9,12 @@
 }
 
 .properties {
-    margin: auto;
+    // margin: auto;
 }
 
 .subproperties {
     display: flex;
+    position: relative;
 }
 
 .multiplier {
@@ -29,6 +30,38 @@
 .cost {
     display: flex;
     margin-left: auto;
+}
+
+
+.maskbar {
+    display: flex;
+    position: relative;
+    justify-content:center;
+    align-items: center;
+}
+
+.mask {
+    width: 400px;
+    height: 70px;
+}
+
+.bar {
+    position: absolute;
+    z-index: -1;
+    width: 400px;
+    height: 70px;
+}
+
+.revenu {
+    position: absolute;
+}
+
+.barbackground {
+    position: absolute;
+    z-index: -2;
+background-color: #34302d;
+width: 400px;
+height: 70px;
 }
 
 .product-thumbnail {
