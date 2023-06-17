@@ -70,6 +70,13 @@ query GetWorld {
     }
   }`;
 
+  export const RESET_WORLD = gql`
+  mutation resetWorld {
+    resetWorld {
+      name
+    }
+  }`;
+
 export const LANCER_PRODUCTION = gql`
   mutation lancerProductionProduit($id: Int!) {
      lancerProductionProduit(id: $id) {
@@ -81,6 +88,20 @@ export const ENGAGER_MANAGER = gql`
     mutation engagerManager($name: String!) {
        engagerManager(name: $name) {
          name
+        } 
+      }`
+
+export const ACHETER_CASH_UPGRADE = gql`
+    mutation acheterCashUpgrade($name: String!) {
+       acheterCashUpgrade(name: $name) {
+         name
+        } 
+      }`
+
+export const ACHETER_ANGEL_UPGRADE = gql`
+    mutation acheterAngelUpgrade($name: String!) {
+        acheterAngelUpgrade(name: $name) {
+          name
         } 
       }`
 

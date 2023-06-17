@@ -78,7 +78,6 @@ export class ProductComponent {
   lancerProduction() {
     if (!this.product.managerUnlocked) {
       this.product.timeleft = this.product.vitesse;
-      console.log("IN LANCERPROD"+this._money)
       this.service
         .lancerProduction(this.product)
         .catch((reason) => console.log('erreur: ' + reason));
@@ -92,12 +91,12 @@ export class ProductComponent {
       this.lastupdate = Date.now();
       return;
     }
+    this.run = true;
     var elapsedTime = Date.now() - this.lastupdate;
     var qteProduit = this.calcQtProductionforElapseTime(elapsedTime);
     if (qteProduit > 0) {
       this.notifyProduction.emit({ product: this.product, qteProduit });
     }
-    this.run = true;
     this.timedisplay = this.convertToTime(this.product.timeleft);
     this.lastupdate = Date.now();
   }
@@ -142,14 +141,11 @@ export class ProductComponent {
   calcQtProductionforElapseTime(tempsEcoule: number) {
     let nbrProduction = 0;
     if (this.product.managerUnlocked) {
-      console.log("ICI 1 "+this.product.name)
       this.auto = true;
       this.run = true;
       this.vitesse = this.product.vitesse;
 
       if (tempsEcoule > this.product.timeleft) {
-        console.log("AVANT ICI 2"+this.product.name+" "+this.product.timeleft)
-        console.log("ICI 2 "+this.product.name)
         var nbr = Math.trunc(
           (tempsEcoule - this.product.timeleft) / this.product.vitesse
         );
@@ -162,7 +158,6 @@ export class ProductComponent {
           this.product.vitesse -
           (tempsEcoule - this.product.timeleft - this.product.vitesse * nbr);
       } else {
-        console.log("ICI 3 "+this.product.name)
         this.product.timeleft = this.product.timeleft - tempsEcoule;
       }
     } else if (this.product.timeleft != 0) {
@@ -180,9 +175,8 @@ export class ProductComponent {
   }
 
   calcUpgrade(p: Palier) {
-    if (!p.unlocked) {
+    if (!p.unlocked || p.idcible === 0) {
       let customMessage = '';
-      // On ajoute l'unlock ou l'upgrade
       switch (p.typeratio) {
         case 'vitesse':
           this.product.vitesse /= p.ratio;

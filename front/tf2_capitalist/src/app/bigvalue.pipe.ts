@@ -14,7 +14,7 @@ export class BigvaluePipe implements PipeTransform {
       i++;
     }
     const formattedValue = "$"+absValue.toLocaleString(undefined, {
-      minimumFractionDigits: 3,
+      minimumFractionDigits: 2,
       maximumFractionDigits: 3,
     });
     return formattedValue + units[i];

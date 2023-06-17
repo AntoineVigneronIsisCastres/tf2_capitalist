@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createClient } from '@urql/core';
 import { AppComponent } from './app.component';
-import { ACHETER_QT_PRODUIT, ENGAGER_MANAGER, GET_WORLD } from './graphrequests';
+import { ACHETER_ANGEL_UPGRADE, ACHETER_CASH_UPGRADE, ACHETER_QT_PRODUIT, ENGAGER_MANAGER, GET_WORLD, RESET_WORLD } from './graphrequests';
 import { LANCER_PRODUCTION } from './graphrequests';
 import { Product } from './world';
 @Injectable({
@@ -24,6 +24,10 @@ export class WebserviceService {
     return this.createClient().query(GET_WORLD, {}).toPromise();
   }
 
+  resetWorld() {
+    return this.createClient().mutation(RESET_WORLD, {}).toPromise();
+  }
+
   getUser() {
     return this.user;
   }
@@ -43,6 +47,20 @@ export class WebserviceService {
     return this.createClient().mutation(ENGAGER_MANAGER, {
       name:
         manager.name
+    }).toPromise();
+  }
+
+  acheterCashUpgrade(palier: any) {
+    return this.createClient().mutation(ACHETER_CASH_UPGRADE, {
+      name:
+        palier.name
+    }).toPromise();
+  }
+
+  acheterAngelUpgrade(palier: any) {
+    return this.createClient().mutation(ACHETER_ANGEL_UPGRADE, {
+      name:
+        palier.name
     }).toPromise();
   }
 

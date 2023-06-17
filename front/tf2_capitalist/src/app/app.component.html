@@ -6,6 +6,12 @@
     (click)="showUnlocks = !showUnlocks"> Unlocks </button>
     <button mat-raised-button color="primary"
     (click)="showAllUnlocks = !showAllUnlocks"> All unlocks </button>
+    <button mat-raised-button color="primary"
+    (click)="showCashUpgrades = !showCashUpgrades"> Cash Upgrades </button>
+    <button mat-raised-button color="primary"
+    (click)="showInvestors = !showInvestors"> Investors </button>
+    <button mat-raised-button color="primary"
+    (click)="showAngelUpgrades = !showAngelUpgrades"> Angel Upgrades </button>
   </div>
   <div class="main-page">
     <div class="money" [innerHTML]="world.money | bigvalue"></div>
@@ -76,12 +82,72 @@
           </div>
           <div>
             <div class="name"> {{ unlock.name}} </div>
-            <div class="cible"> {{ world.products[unlock.idcible-1].name }} </div>
             <div class="cost"> {{ unlock.seuil}} </div>
           </div>
         </div>
       </div>
     </div> <button class="closebutton" mat-raised-button color="primary"
     (click)="showAllUnlocks = !showAllUnlocks">Close</button>
+  </div>
+  <div *ngIf="showCashUpgrades" class="modal">
+    <div>
+      <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
+    </div>
+    <div>
+      <div *ngFor="let upgrade of world.upgrades">
+        <div *ngIf="!upgrade.unlocked" class="unlockslayout">
+          <div>
+            <div class="logo"><img class="round" [attr.src]="server+world.logo" /> </div>
+          </div>
+          <div>
+            <div class="name"> {{ upgrade.name}} </div>
+            <div class="cible"> {{ world.products[upgrade.idcible-1].name }} </div>
+            <div class="cost"> {{ upgrade.seuil}} </div>
+            <div class="hirebutton" (click)="buyUpgrade(upgrade)"
+            [ngClass]="{'selectable' : (world.money >= upgrade.seuil)}">Buy !</div>
+          </div>
+        </div>
+      </div>
+    </div> <button class="closebutton" mat-raised-button color="primary"
+    (click)="showCashUpgrades = !showCashUpgrades">Close</button>
+  </div>
+  <div *ngIf="showInvestors" class="modal">
+    <div>
+      <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
+    </div>
+    <div>
+      <div class="angelframe">
+        Angel Investors
+        <div class="angelcontainerleft">
+          {{world.activeangels}} Active Angels <br/>
+          2% Bonus Per Angels
+        </div>
+        <div class="angelcontainerright" (click)="resetWorld()">
+          {{angelstoclaim}} To Claim with Restart
+        </div>
+      </div>
+    </div> <button class="closebutton" mat-raised-button color="primary"
+    (click)="showInvestors = !showInvestors">Close</button>
+  </div>
+  <div *ngIf="showAngelUpgrades" class="modal">
+    <div>
+      <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
+    </div>
+    <div>
+      <div *ngFor="let angel of world.angelupgrades">
+        <div *ngIf="!angel.unlocked" class="unlockslayout">
+          <div>
+            <div class="logo"><img class="round" [attr.src]="server+world.logo" /> </div>
+          </div>
+          <div>
+            <div class="name"> {{ angel.name}} </div>
+            <div class="cost"> {{ angel.seuil}} </div>
+            <div class="hirebutton" (click)="buyAngelUpgrade(angel)"
+            [ngClass]="{'selectable' : (world.money >= angel.seuil)}">Buy !</div>
+          </div>
+        </div>
+      </div>
+    </div> <button class="closebutton" mat-raised-button color="primary"
+    (click)="showAngelUpgrades = !showAngelUpgrades">Close</button>
   </div>
 </div>

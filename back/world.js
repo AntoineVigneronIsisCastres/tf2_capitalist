@@ -4,7 +4,7 @@ module.exports = {
     "money": 10000,
     "score": 0,
     "totalangels": 0,
-    "activeangels": 0,
+    "activeangels": 1000,
     "angelbonus": 2,
     "lastupdate": 0,
     "products": [
@@ -270,7 +270,7 @@ module.exports = {
             "name": "Nom du premier unlock général",
             "logo": "icones/premierunlock.jpg",
             "seuil": 30,
-            "idcible": 1,
+            "idcible": 0,
             "ratio": 2,
             "typeratio": "gain",
             "unlocked": false
