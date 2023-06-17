@@ -28,11 +28,8 @@ module.exports = {
                                 calcUpgrade(p, product);
                             }});
                         context.world.allunlocks.forEach((allunlock) => {
-                            console.log(allunlock)
-                            console.log(context.world.products.filter((p) => p.quantite < allunlock.seuil))
                             if (!allunlock.unlocked && 
                               context.world.products.filter((p) => p.quantite < allunlock.seuil).length == 0) {
-                                console.log("PPPPPPP"+p)
                                 context.world.products.forEach((p) => { calcUpgrade(allunlock, p) });
                                 allunlock.unlocked = true;
                               }
@@ -54,21 +51,14 @@ module.exports = {
                     throw new Error(`Le produit avec l'id ${args.id} n'existe pas`)
                 } else {
                     product.timeleft = product.vitesse;
-                    console.log('----------------------------lancerproductionproduit-------------------')
                 }
             } else {
                 throw new Error(`Le produit avec l'id ${args.id} n'existe pas`)
             }
             saveWorld(context)
         },
-        // calcNewUnlocks(world: World {
-        //     return world.products.flatMap(p => p.paliers.filter(palier => !palier.unlmocked && palier.seuil <= p.quantite)).concat(world.allunlocks.filter(palier => !palier.unlocked && palier.seuil <= Math.min(...world.products.map(p => p.quantite))))
-        // })
         engagerManager(parent, args, context) {
-            console.log("money 1 "+context.world.money)
             updateWorld(context)
-            console.log("money 2 "+context.world.money)
-            console.log('----------------------------engagermanager-------------------')
             if (args.name) {
                 var manager = context.world.managers.find(manager => args.name == manager.name);
                 var product = context.world.products.find(product => manager.idcible == product.id);
@@ -79,6 +69,53 @@ module.exports = {
             } else {
                 throw new Error(`Le manager avec le nom ${args.name} n'existe pas`)
             }
+            saveWorld(context);
+        },
+        acheterCashUpgrade(parent, args, context) {
+            updateWorld(context)
+            if(args.name) {
+                var cashupgrade = context.world.upgrades.find(u => u.name == args.name);
+                var product = context.world.products.find(p => p.id == cashupgrade.idcible);
+                cashupgrade.unlocked = true;
+                context.world.money -= cashupgrade.seuil;
+                calcUpgrade(cashupgrade, product);
+            } else {
+                throw new Error(`Le cash upgrade avec le nom ${args.name} n'existe pas`)
+            }
+            saveWorld(context);
+        },
+        acheterAngelUpgrade(parent, args, context) {
+            updateWorld(context)
+            if(args.name) {
+                var angelupgrade = context.world.angelupgrades.find(a => a.name == args.name)
+                if(angelupgrade) {
+                    context.world.activeangels -= angelupgrade.seuil;
+                    if (angelupgrade.idcible === 0) {
+                        context.world.products.forEach(p => calcUpgrade(angelupgrade, p));
+                    } else if (angelupgrade.idcible === -1 && upgrades.typeratio === 'angel') {
+                        context.world.angelbonus += angelupgrade.ratio;
+                    }
+                } else {
+                    throw new Error (`L'angelupgrade avec le nom ${args.name} n'existe pas`)
+                }
+            } else {
+                throw new Error(`L'angelupgrade avec le nom ${args.name} n'existe pas`)
+            }
+            saveWorld(context);
+        },
+        resetWorld(parent, args, context) {
+            updateWorld(context);
+            var angelstoclaim = Math.floor(150 * Math.sqrt(context.world.score / Math.pow(10, 15))) -
+            context.world.totalangels;
+            var score = context.world.score
+            var activeangels = angelstoclaim + context.world.activeangels;
+            var totalangels = angelstoclaim + context.world.totalangels;
+            context.world = {
+                ...world,
+                score: score,
+                totalangels: totalangels,
+                activeangels: activeangels,
+            };
             saveWorld(context);
         }
     }
@@ -99,12 +136,10 @@ function updateWorld(context) {
     var tempsecoule = Date.now() - context.world.lastupdate;
     for (var product of products) {
         var quantite = calcQtProduitTempsEcoule(product, tempsecoule);
-        const moneyMade =
-            product.revenu *
-            product.quantite *
-            quantite
-        context.world.money += moneyMade;
-        context.world.score += moneyMade;
+        const gain = product.revenu * product.quantite * quantite *
+            (1 + (context.world.activeangels * context.world.angelbonus) / 100);
+        context.world.money += gain;
+        context.world.score += gain;
     }
     context.world.lastupdate = Date.now();
 }
@@ -131,7 +166,6 @@ function calcQtProduitTempsEcoule(product, tempsEcoule) {
 }
 
 function calcUpgrade(palier, product) {
-    // On ajoute l'unlock ou l'upgrade
     switch (palier.typeratio) {
       case "vitesse":
         product.vitesse /= palier.ratio;
@@ -144,4 +178,4 @@ function calcUpgrade(palier, product) {
         throw "Le type de ratio " + palier.typeratio + " n'existe pas !";
     }
     palier.unlocked = true;
-  }
+}
