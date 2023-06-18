@@ -73,6 +73,7 @@ export class ProductComponent {
     if(this.product.managerUnlocked || this.product.timeleft != 0){
       this.initialValue = this.product.vitesse - this.product.timeleft;
     }
+
   }
 
   lancerProduction() {

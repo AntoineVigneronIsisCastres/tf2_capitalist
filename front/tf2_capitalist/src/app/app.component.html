@@ -1,25 +1,27 @@
 <div class="page">
   <div class="menu">
-    <button mat-raised-button color="primary" [matBadge]="badgeManagers" [matBadgeHidden]="badgeManagers==0"
-    (click)="showManagers = !showManagers"> Managers </button>
-    <button mat-raised-button color="primary"
-    (click)="showUnlocks = !showUnlocks"> Unlocks </button>
-    <button mat-raised-button color="primary"
-    (click)="showAllUnlocks = !showAllUnlocks"> All unlocks </button>
-    <button mat-raised-button color="primary"
-    (click)="showCashUpgrades = !showCashUpgrades"> Cash Upgrades </button>
-    <button mat-raised-button color="primary"
-    (click)="showInvestors = !showInvestors"> Investors </button>
-    <button mat-raised-button color="primary"
-    (click)="showAngelUpgrades = !showAngelUpgrades"> Angel Upgrades </button>
+    <div>
+      <img class="profilepic" src="{{server}}/{{profilepic}}">
+    </div>
+    <div>
+      <img class="tf2title" src="{{server}}/{{titleicon}}">
+    </div>
+    <div class="button" [matBadge]="badgeManagers" [matBadgeHidden]="badgeManagers==0" (click)="showManagers = !showManagers">
+      Managers </div>
+    <div class="button" (click)="showUnlocks = !showUnlocks"> Unlocks </div>
+    <div class="button" (click)="showAllUnlocks = !showAllUnlocks"> All unlocks </div>
+    <div class="button" (click)="showCashUpgrades = !showCashUpgrades"> Cash Upgrades </div>
+    <div class="button" (click)="showInvestors = !showInvestors"> Investors </div>
+    <div class="button" (click)="showAngelUpgrades = !showAngelUpgrades"> Angel Upgrades </div>
   </div>
   <div class="main-page">
     <div class="money" [innerHTML]="world.money | bigvalue"></div>
-    <input class="player_id" type="text" [(ngModel)]="username" (change)="onUsernameChanged()"/>
+    <input class="player_id" type="text" [(ngModel)]="username" (change)="onUsernameChanged()" />
     <div class="content">
       <div class="product" *ngFor="let product of world.products">
         <app-product [prod]="product" [qtmulti]="multiplier" [money]="world.money"
-        (notifyProduction)="onProductionDone($event)" (notifyBuy)="onBuy($event)" class="product col-md-6"></app-product>
+          (notifyProduction)="onProductionDone($event)" (notifyBuy)="onBuy($event)"
+          class="product col-md-6"></app-product>
       </div>
     </div>
   </div>
@@ -32,21 +34,21 @@
       <div *ngFor="let manager of world.managers">
         <div *ngIf="!manager.unlocked" class="unlock-item">
           <div class="itemwrapper">
-            <div class="roundmenu"><img class="product-image" [attr.src]="server+'/'+manager.logo" /> </div>
+            <img class="manager-image" [attr.src]="server+'/'+manager.logo" />
           </div>
           <div>
             <div class="name"> {{ manager.name}} </div>
             <div class="cible"> {{ world.products[manager.idcible-1].name }} </div>
-            <div class="cost"> {{ manager.seuil}} </div>
+            <div class="cost"> ${{ manager.seuil}} </div>
           </div>
           <div>
             <div class="hirebutton" (click)="hireManager(manager)"
-            [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
+              [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
           </div>
         </div>
       </div>
-    </div> <button class="closebutton" mat-raised-button color="primary"
-    (click)="showManagers = !showManagers">Close</button>
+    </div> <div class="closebutton"
+      (click)="showManagers = !showManagers">Close</div>
   </div>
   <div *ngIf="showUnlocks" class="modal">
     <div>
@@ -67,8 +69,8 @@
           </div>
         </div>
       </div>
-    </div> <button class="closebutton" mat-raised-button color="primary"
-    (click)="showUnlocks = !showUnlocks">Close</button>
+    </div> <div class="closebutton"
+      (click)="showUnlocks = !showUnlocks">Close</div>
   </div>
   <div *ngIf="showAllUnlocks" class="modal">
     <div>
@@ -86,8 +88,8 @@
           </div>
         </div>
       </div>
-    </div> <button class="closebutton" mat-raised-button color="primary"
-    (click)="showAllUnlocks = !showAllUnlocks">Close</button>
+    </div> <div class="closebutton"
+      (click)="showAllUnlocks = !showAllUnlocks">Close</div>
   </div>
   <div *ngIf="showCashUpgrades" class="modal">
     <div>
@@ -104,12 +106,12 @@
             <div class="cible"> {{ world.products[upgrade.idcible-1].name }} </div>
             <div class="cost"> {{ upgrade.seuil}} </div>
             <div class="hirebutton" (click)="buyUpgrade(upgrade)"
-            [ngClass]="{'selectable' : (world.money >= upgrade.seuil)}">Buy !</div>
+              [ngClass]="{'selectable' : (world.money >= upgrade.seuil)}">Buy !</div>
           </div>
         </div>
       </div>
-    </div> <button class="closebutton" mat-raised-button color="primary"
-    (click)="showCashUpgrades = !showCashUpgrades">Close</button>
+    </div> <div class="closebutton"
+      (click)="showCashUpgrades = !showCashUpgrades">Close</div>
   </div>
   <div *ngIf="showInvestors" class="modal">
     <div>
@@ -119,15 +121,15 @@
       <div class="angelframe">
         Angel Investors
         <div class="angelcontainerleft">
-          {{world.activeangels}} Active Angels <br/>
+          {{world.activeangels}} Active Angels <br />
           2% Bonus Per Angels
         </div>
         <div class="angelcontainerright" (click)="resetWorld()">
           {{angelstoclaim}} To Claim with Restart
         </div>
       </div>
-    </div> <button class="closebutton" mat-raised-button color="primary"
-    (click)="showInvestors = !showInvestors">Close</button>
+    </div> <div class="closebutton"
+      (click)="showInvestors = !showInvestors">Close</div>
   </div>
   <div *ngIf="showAngelUpgrades" class="modal">
     <div>
@@ -143,11 +145,11 @@
             <div class="name"> {{ angel.name}} </div>
             <div class="cost"> {{ angel.seuil}} </div>
             <div class="hirebutton" (click)="buyAngelUpgrade(angel)"
-            [ngClass]="{'selectable' : (world.money >= angel.seuil)}">Buy !</div>
+              [ngClass]="{'selectable' : (world.money >= angel.seuil)}">Buy !</div>
           </div>
         </div>
       </div>
-    </div> <button class="closebutton" mat-raised-button color="primary"
-    (click)="showAngelUpgrades = !showAngelUpgrades">Close</button>
+    </div> <div class="closebutton"
+      (click)="showAngelUpgrades = !showAngelUpgrades">Close</div>
   </div>
 </div>

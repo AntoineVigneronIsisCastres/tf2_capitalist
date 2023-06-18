@@ -57,6 +57,7 @@ p {
 }
 
 .content {
+  transform: scale(0.90);
   height: 90vh;
   display: flex;
   padding: 0 16px;
@@ -294,7 +295,7 @@ svg#clouds {
 }
 
 .main-page {
-  margin-left: 50px;
+  max-height: 90vh;
 }
 
 .menu {
@@ -303,7 +304,7 @@ svg#clouds {
   height: 90vh;
   padding: 16px;
   margin: 16px;
-  width: 200px;
+  width: 30vh;
   border-right: none;
   background: #2b2626;
   text-align: center;
@@ -332,6 +333,7 @@ svg#clouds {
 }
 
 .product {
+  margin-bottom: 50px;
   width: 400px;
 }
 
@@ -356,12 +358,12 @@ svg#clouds {
 
 .modal {
   position: fixed;
-  z-index: 2;
-  width: 800px;
-  height: 800px;
+  z-index: 5;
+  width: 700px;
+  height: 600px;
   overflow: auto;
   background-color: #2B2626;
-  // border: solid;
+  border-radius: 50px 0px 0px 50px;
   top: 30px;
   left: 30%;
   right: 25%;
@@ -410,10 +412,12 @@ svg#clouds {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background-color: #000000;
+  background-color: #2b2626;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-size: cover;
+  background-image: url('../assets/tf2logo.png');
 }
 
 .hirebutton {

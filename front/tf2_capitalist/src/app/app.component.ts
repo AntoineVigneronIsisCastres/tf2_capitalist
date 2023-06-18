@@ -1,4 +1,5 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebserviceService } from './webservice.service';
 import { Product, World } from './world';
@@ -7,9 +8,16 @@ import { ProductComponent } from './product/product.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('spinAnimation', [
+      state('start', style({ transform: 'rotate(0deg)' })),
+      state('end', style({ transform: 'rotate(360deg)' })),
+      transition('start => end', animate('1s')),
+    ])
+  ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy{
   @ViewChildren(ProductComponent) 
   productsComponent: QueryList<ProductComponent> = new QueryList();
   title = 'tf2_capitalist';
@@ -24,8 +32,12 @@ export class AppComponent {
   showInvestors = false;
   angelstoclaim = 0;
   server = 'http://localhost:4000';
+  profilepic = 'icones/redmond.png';
+  titleicon = 'icones/tf2title.png';
   badgeManagers = 0;
   availableManagers = [];
+  private timeouts: number[] = [];
+  private spinDuration: number = 1000;
   constructor(private service: WebserviceService, private snackBar: MatSnackBar) {}
 
 
@@ -41,7 +53,36 @@ export class AppComponent {
       world => {
         this.world = world.data.getWorld;
       });
+      setTimeout(() => {this.triggerSpin()}, 1000);
+      setInterval(() => { this.triggerSpin() }, 10000);
   }
+
+
+  triggerSpin() {
+    this.timeouts = []
+    const spinDivs = document.querySelectorAll(".round") as NodeListOf<HTMLElement>;
+    spinDivs.forEach((spinDiv: HTMLElement) => {
+      const randomTimeout = Math.random() * 10000;
+      const timeoutId = window.setTimeout(() => {
+        this.startSpin(spinDiv);
+      }, randomTimeout);
+      this.timeouts.push(timeoutId);
+    });
+  }
+
+  startSpin(spinDiv: HTMLElement) {
+    spinDiv.style.animation = 'none';
+    setTimeout(() => {
+      spinDiv.style.animation = '';
+    }, 0);
+  }
+
+  ngOnDestroy() {
+    this.timeouts.forEach((timeoutId: number) => {
+      window.clearTimeout(timeoutId);
+    });
+  }
+
   onProductionDone(data : {product: Product; qteProduit: number}) {
     const gain = data.product.quantite * data.product.revenu * data.qteProduit *
       (1 + (this.world.activeangels * this.world.angelbonus) / 100);

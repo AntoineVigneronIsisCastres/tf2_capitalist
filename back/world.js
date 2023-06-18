@@ -4,7 +4,7 @@ module.exports = {
     "money": 10000,
     "score": 0,
     "totalangels": 0,
-    "activeangels": 1000,
+    "activeangels": 0,
     "angelbonus": 2,
     "lastupdate": 0,
     "products": [
@@ -301,7 +301,7 @@ module.exports = {
     "managers": [
         {
             "name": "Heavy",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/heavy.jpg",
             "seuil": 10,
             "idcible": 1,
             "ratio": 0,
@@ -310,7 +310,7 @@ module.exports = {
         },
         {
             "name": "Demoman",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/demoman.jpg",
             "seuil": 30,
             "idcible": 2,
             "ratio": 0,
@@ -319,7 +319,7 @@ module.exports = {
         },
         {
             "name": "Medic",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/medic.jpg",
             "seuil": 30,
             "idcible": 3,
             "ratio": 0,
@@ -328,7 +328,7 @@ module.exports = {
         },
         {
             "name": "Soldier",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/soldier.jpg",
             "seuil": 30,
             "idcible": 4,
             "ratio": 0,
@@ -337,7 +337,7 @@ module.exports = {
         },
         {
             "name": "Spy",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/spy.jpg",
             "seuil": 30,
             "idcible": 5,
             "ratio": 0,
@@ -346,7 +346,7 @@ module.exports = {
         },
         {
             "name": "Pyro",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/pyro.jpg",
             "seuil": 30,
             "idcible": 6,
             "ratio": 0,
@@ -355,7 +355,7 @@ module.exports = {
         },
         {
             "name": "Engineer",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/engineer.jpg",
             "seuil": 30,
             "idcible": 7,
             "ratio": 0,
@@ -364,7 +364,7 @@ module.exports = {
         },
         {
             "name": "Scout",
-            "logo": "icones/WangariMaathai.jpg",
+            "logo": "icones/scout.jpg",
             "seuil": 30,
             "idcible": 8,
             "ratio": 0,

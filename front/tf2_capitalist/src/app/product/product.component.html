@@ -1,7 +1,7 @@
 <div class="product-wrapper">
-    <div class="product-thumbnail" (click)="lancerProduction()">
+    <div class="product-thumbnail">
         <div class="round">
-            <img class="product-image" src="{{server}}/{{product.logo}}">
+            <img class="product-image" src="{{server}}/{{product.logo}}" (click)="lancerProduction()">
         </div>
         <div class="quantity">{{product.quantite}}</div>
     </div>

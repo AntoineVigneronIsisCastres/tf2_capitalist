@@ -1,5 +1,7 @@
 .product-wrapper {
     display: inline-flex;
+    background-color: #2b2626;
+    border-radius: 60px;
 }
 
 .progression-bar{
@@ -9,15 +11,22 @@
 }
 
 .properties {
-    // margin: auto;
+    position: absolute;
+    background-color: #2b2626;
+    border-radius: 100px;
+    // width: 500px;
+    // z-index: -1;
 }
 
 .subproperties {
     display: flex;
     position: relative;
+    margin-left: 102px;
 }
 
 .multiplier {
+    cursor: pointer;
+    z-index: 3;
     background-color: #2b2626;
     height: 40px;
     width: 280px;
@@ -25,43 +34,57 @@
     display: flex;
     align-items: center;
     padding-left: 10px;
+    user-select: none;
+    border-radius: 10px 0 0 10px;
 }
+
+.multiplier:hover {
+    background-color: #6B6A65;
+  }
 
 .cost {
     display: flex;
     margin-left: auto;
+    margin-right: 10px;
 }
 
 
 .maskbar {
     display: flex;
     position: relative;
+    margin-left: 92px;
     justify-content:center;
     align-items: center;
+    border-radius: 0 20px 0 0;
 }
 
 .mask {
     width: 400px;
     height: 70px;
+    z-index: 0;
+    border-radius: 0 20px 0 0;
 }
 
 .bar {
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     width: 400px;
     height: 70px;
+    border-radius: 0 20px 0 0;
 }
 
 .revenu {
     position: absolute;
+    font-size: 130%;
 }
 
 .barbackground {
     position: absolute;
-    z-index: -2;
-background-color: #34302d;
-width: 400px;
-height: 70px;
+    z-index: -1;
+    background-color: #34302d;
+    width: 400px;
+    height: 70px;
+    border-radius: 0 20px 0 0;
 }
 
 .product-thumbnail {
@@ -75,10 +98,11 @@ height: 70px;
     height: 30px;
     width: 110px;
     font-size: 150%;
-    background-color: #2b2626;
+    background-color: #000000;
     border-radius: 30px;
     align-items:center;
     justify-content:center;
+    z-index: 4;
 }
 
 .timer {
@@ -90,5 +114,6 @@ height: 70px;
     justify-content:center;
     text-align: center;
     font-size: 20px;
+    border-radius: 0 0 20px 0;
 
 }
