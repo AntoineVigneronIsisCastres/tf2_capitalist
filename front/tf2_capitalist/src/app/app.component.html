@@ -47,7 +47,8 @@
           </div>
         </div>
       </div>
-    </div> <div class="closebutton"
+    </div>
+    <div class="closebutton"
       (click)="showManagers = !showManagers">Close</div>
   </div>
   <div *ngIf="showUnlocks" class="modal">
@@ -64,7 +65,7 @@
             <div>
               <div class="name"> {{ unlock.name}} </div>
               <div class="cible"> {{ world.products[unlock.idcible-1].name }} </div>
-              <div class="cost"> {{ unlock.seuil}} </div>
+              <div class="cost"> {{ unlock.seuil}} units</div>
             </div>
           </div>
         </div>
@@ -76,15 +77,19 @@
     <div>
       <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
     </div>
-    <div>
+    <div class="gridlayout">
       <div *ngFor="let unlock of world.allunlocks">
-        <div *ngIf="!unlock.unlocked" class="unlockslayout">
-          <div>
-            <div class="logo"><img class="round" [attr.src]="server+world.logo" /> </div>
+        <div *ngIf="!unlock.unlocked" class="unlock-item">
+          <div class="itemwrapper">
+            <div class="roundmenu">
+              <ng-container *ngIf="unlock.idcible !== 0">
+                <img class="product-image" [attr.src]="server + '/' + world.products[unlock.idcible-1].logo" />
+              </ng-container>
+            </div>
           </div>
           <div>
             <div class="name"> {{ unlock.name}} </div>
-            <div class="cost"> {{ unlock.seuil}} </div>
+            <div class="cost" style="margin: auto;"> {{ unlock.seuil}} units for all products</div>
           </div>
         </div>
       </div>
@@ -93,18 +98,22 @@
   </div>
   <div *ngIf="showCashUpgrades" class="modal">
     <div>
-      <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
+      <h1 class="title">Boost your investments !</h1>
     </div>
-    <div>
+    <div class="gridlayout">
       <div *ngFor="let upgrade of world.upgrades">
-        <div *ngIf="!upgrade.unlocked" class="unlockslayout">
-          <div>
-            <div class="logo"><img class="round" [attr.src]="server+world.logo" /> </div>
+        <div *ngIf="!upgrade.unlocked" class="unlock-item">
+          <div class="itemwrapper">
+              <div class="roundmenu">
+                <ng-container *ngIf="upgrade.idcible !== 0">
+                  <img class="product-image" [attr.src]="server + '/' + world.products[upgrade.idcible-1].logo" />
+                </ng-container>
+              </div>
           </div>
           <div>
             <div class="name"> {{ upgrade.name}} </div>
             <div class="cible"> {{ world.products[upgrade.idcible-1].name }} </div>
-            <div class="cost"> {{ upgrade.seuil}} </div>
+            <div class="cost"> ${{ upgrade.seuil}} </div>
             <div class="hirebutton" (click)="buyUpgrade(upgrade)"
               [ngClass]="{'selectable' : (world.money >= upgrade.seuil)}">Buy !</div>
           </div>
@@ -115,11 +124,10 @@
   </div>
   <div *ngIf="showInvestors" class="modal">
     <div>
-      <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
+      <h1 class="title">Angel Investors</h1>
     </div>
     <div>
       <div class="angelframe">
-        Angel Investors
         <div class="angelcontainerleft">
           {{world.activeangels}} Active Angels <br />
           2% Bonus Per Angels
@@ -133,17 +141,17 @@
   </div>
   <div *ngIf="showAngelUpgrades" class="modal">
     <div>
-      <h1 class="title">Want to maximise your profits ? Get your investments to these quotas !</h1>
+      <h1 class="title">Spend your Angels Wisely !</h1>
     </div>
-    <div>
+    <div class="gridlayout">
       <div *ngFor="let angel of world.angelupgrades">
-        <div *ngIf="!angel.unlocked" class="unlockslayout">
-          <div>
-            <div class="logo"><img class="round" [attr.src]="server+world.logo" /> </div>
+        <div *ngIf="!angel.unlocked" class="unlock-item">
+          <div class="itemwrapper">
+            <div class="roundmenu"><img class="roundmenu" [attr.src]="server+'/'+angelimage" /> </div>
           </div>
           <div>
             <div class="name"> {{ angel.name}} </div>
-            <div class="cost"> {{ angel.seuil}} </div>
+            <div class="cost"> {{ angel.seuil}} angels</div>
             <div class="hirebutton" (click)="buyAngelUpgrade(angel)"
               [ngClass]="{'selectable' : (world.money >= angel.seuil)}">Buy !</div>
           </div>

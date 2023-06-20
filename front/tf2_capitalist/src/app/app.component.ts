@@ -35,6 +35,8 @@ export class AppComponent implements OnInit, OnDestroy{
   profilepic = 'icones/redmond.png';
   titleicon = 'icones/tf2title.png';
   badgeManagers = 0;
+  angelimage = 'icones/merasmus.png';
+  engineer = 'icones/engineerdance.gif';
   availableManagers = [];
   private timeouts: number[] = [];
   private spinDuration: number = 1000;
@@ -64,16 +66,19 @@ export class AppComponent implements OnInit, OnDestroy{
     spinDivs.forEach((spinDiv: HTMLElement) => {
       const randomTimeout = Math.random() * 10000;
       const timeoutId = window.setTimeout(() => {
-        this.startSpin(spinDiv);
+        var images = document.querySelectorAll(".product-image") as NodeListOf<HTMLElement>;
+        this.startSpin(spinDiv, images[0]);
       }, randomTimeout);
       this.timeouts.push(timeoutId);
     });
   }
 
-  startSpin(spinDiv: HTMLElement) {
+  startSpin(spinDiv: HTMLElement, image: HTMLElement) {
     spinDiv.style.animation = 'none';
+    image.style.animation = 'none';
     setTimeout(() => {
       spinDiv.style.animation = '';
+      image.style.animation = 'none';
     }, 0);
   }
 
@@ -107,7 +112,7 @@ export class AppComponent implements OnInit, OnDestroy{
   setBadgeManagers() {
     this.badgeManagers = 0;
     for (var i = 0; i < this.world.managers.length; i++) {
-      if (this.world.money >= this.world.managers[i].seuil){
+      if (this.world.money >= this.world.managers[i].seuil && !this.world.managers[i].unlocked){
         this.badgeManagers += 1;
       }
     }

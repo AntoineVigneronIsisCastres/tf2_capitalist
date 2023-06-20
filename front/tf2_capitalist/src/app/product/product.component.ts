@@ -60,7 +60,15 @@ export class ProductComponent {
         this.multiplier = 100;
         break;
       case 'NEXT':
-        this.multiplier = 55;
+        let seuil = 20;
+        for (let i = 0; i < this.product.paliers.length; i++) {
+          const dictionary = this.product.paliers[i];
+          if (dictionary.unlocked === false) {
+            seuil = dictionary.seuil;
+            break;
+          }
+        }
+        this.multiplier = seuil - this.product.quantite;
         break;
       case 'MAX':
         this.multiplier = Math.floor(Math.log(1 - (this._money / this.product.cout) * (1 - this.product.croissance)) / Math.log(this.product.croissance));

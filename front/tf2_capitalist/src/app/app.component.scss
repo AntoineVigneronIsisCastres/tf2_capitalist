@@ -295,7 +295,7 @@ svg#clouds {
 }
 
 .main-page {
-  max-height: 90vh;
+  height: 95vh;
 }
 
 .menu {
@@ -349,10 +349,14 @@ svg#clouds {
   position: absolute;
   top: 30px;
   right: 20px;
+  margin-top: 15px;
   background-color: #202020;
   color: white;
   display: flex;
   align-items: center;
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
   justify-content: center;
 }
 
@@ -367,6 +371,7 @@ svg#clouds {
   top: 30px;
   left: 30%;
   right: 25%;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 1);
 }
 
 .gridlayout {
@@ -428,14 +433,43 @@ svg#clouds {
   margin-top: 10px;
   padding: 5px;
   background-color: #000000;
+  user-select: none;
   cursor: pointer;
 }
 
 .player_id {
+  font-family: 'Tf2 Build';
+  background-color: #2B2626;
+  color: #C0C0C0;
   position: absolute;
   top: 10px;
   right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.angelframe {
+  display: flex;
+  margin-top: 20px;
+  font-size: 130%;
+}
+
+.angelcontainerleft {
+  margin: auto;
+}
+
+.angelcontainerright {
+  margin: auto;
+  padding: 50px;
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
+  background-color: #913A1E;
+}
+
+.engineer {
+  width: 100px;
 }
